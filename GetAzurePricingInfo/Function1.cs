@@ -6,7 +6,6 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
-
 namespace GetAzurePricingInfo
 {
     public class Function1
@@ -14,7 +13,12 @@ namespace GetAzurePricingInfo
         [FunctionName("Function1")]
         public static async Task Run([TimerTrigger("*/5 * * * * *")]TimerInfo myTimer, ILogger log)
         {
+            //Establish connection to SQL Database storage
+            string sqlConnectionString = Environment.GetEnvironmentVariable("AZURESQL_CONNECTION_STRING");
            
+
+
+
             //Create a HTTP request to get the HTTP sizes
             string baseurl = "https://prices.azure.com/api/retail/prices?";
             string selection = "&$filter=serviceName eq \'Virtual Machines\' and armRegionName eq \'westeurope\'";

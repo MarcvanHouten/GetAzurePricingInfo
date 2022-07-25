@@ -39,3 +39,4 @@ az sql db create \
     --family Gen5 \
     --capacity 2
 
+login: azureuser, password: Pa9w0rD-26867153
