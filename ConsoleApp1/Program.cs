@@ -1,11 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Microsoft.EntityFrameworkCore;
-
+using System.Runtime.CompilerServices;
 
 using (var db = new PricingContext())
 {
-    db.PricingItems
-    db.PricingItems.Add(new Item { currencyCode = "EUR" });
+    
+    Student std = new Student
+    {
+        Name = "Johant"
+    };
+
+
+    db.Students.Add(std);
     db.SaveChanges();
 
 }

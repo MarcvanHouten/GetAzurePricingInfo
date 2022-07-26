@@ -25,26 +25,53 @@ namespace GetAzurePricingInfo
 
             log.LogInformation(baseurl+selection);
 
+            HttpClient client = new HttpClient();
+            bool ReceivedAllResults = false;
+
+            do
+            {   
+                using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, baseurl + selection);
+                HttpResponseMessage response = await client.SendAsync(request);
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.StatusCode.ToString() != "OK")
+                {
+                    log.LogInformation($"{DateTime.Now} Error connecting to pricing API. Statuscode: {response.StatusCode}");
+                    break;
+                }
+                else
+                {
+                    PricingInformation p = new PricingInformation();
+                    p = JsonConvert.DeserializeObject<PricingInformation>(content);
+                    
+                    //INSERT DATA TO DATABASE
+                    
+                    
+                    if (p.Count < 100)
+                    {
+                        ReceivedAllResults = true;
+                    }
+                    else
+                    {
+                        string url = p.NextPageLink.ToString();
+                    }
+                }
+                
+
+            } while (!ReceivedAllResults);
+
+            
             /*
             var request = new HttpRequestMessage(HttpMethod.Get, baseurl + selection);
 
-            //request.Headers.Add("Authorization", "Bearer " + bearertoken);
+            
 
-            HttpClient client = new HttpClient();
-
-            var response = await client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-
+            
 
             if (response.StatusCode.ToString() == "OK")
             {
-                log.LogInformation("Status code received: " + response.StatusCode);
-
-                PricingInformation p = new PricingInformation();
-
-                p = JsonConvert.DeserializeObject<PricingInformation>(content);
-
-                foreach (Item i in p.Items)
+                
+                         foreach (Item i in p.Items)
                 {
                     log.LogInformation("Name {0}", i.armSkuName);
                 }
@@ -61,6 +88,6 @@ namespace GetAzurePricingInfo
             */
 
 
-        } 
+        }
     }
 }
