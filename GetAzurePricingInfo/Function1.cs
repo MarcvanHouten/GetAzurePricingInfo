@@ -15,8 +15,11 @@ namespace GetAzurePricingInfo
         {
             //Establish connection to SQL Database storage
             string sqlConnectionString = Environment.GetEnvironmentVariable("AZURESQL_CONNECTION_STRING");
-           
 
+
+            log.LogInformation(sqlConnectionString);
+
+            /*
 
 
             //Create a HTTP request to get the HTTP sizes

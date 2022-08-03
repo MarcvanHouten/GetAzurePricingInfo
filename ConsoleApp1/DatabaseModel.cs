@@ -1,21 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 
-public class PricingContext : DbContext
+public class AzurePricingContext : DbContext
 {
 
-    private string _connectionstring;
+    private string _connectionstring = "";
 
-    public PricingContext(string connectionstring)
+    public AzurePricingContext(DbContextOptions options)
     {
-        _connectionstring = connectionstring;
+        IConfigurationBuilder builder = new ConfigurationBuilder().AddJsonFile("C:\\Users\\mavanhou\\source\\repos\\GetAzurePricingInfo\\ConsoleApp1\\appsettings.json", false, true);
+        IConfigurationRoot configuration = builder.Build();
+        string _connectionstring = configuration.GetConnectionString("MyDatabaseConnection");
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        options.UseSqlServer(_connectionstring);
+        optionsBuilder.UseSqlServer("..);
     }
     
     /*
@@ -24,7 +27,7 @@ public class PricingContext : DbContext
 
     */
     
-    public DbSet<Student> ?Students { get; set; }
+    //public DbSet<Student> ?Students { get; set; }
 
-    //public DbSet<Item>? PricingItems { get; set; }
+    public DbSet<Item> ?PricingItems { get; set; }
 }

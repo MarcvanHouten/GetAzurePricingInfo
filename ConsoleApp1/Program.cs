@@ -23,18 +23,10 @@ using (var db = new PricingContext())
 */
 
 
-IConfigurationBuilder builder = new ConfigurationBuilder().AddJsonFile("C:\\Users\\mavanhou\\source\\repos\\GetAzurePricingInfo\\ConsoleApp1\\appsettings.json", false, true);
-IConfigurationRoot configuration = builder.Build();
-string conn = configuration.GetConnectionString("MyDatabaseConnection");
 
-var db = new PricingContext(conn);
 
-Student std = new Student
-    {
-        Name = "Bill"
-    };
+var db = new AzurePricingContext()
 
-db.Students.Add(std);
 db.SaveChanges();
 
 
@@ -42,7 +34,7 @@ db.SaveChanges();
 
 // Write the values to the console.
 
-Console.WriteLine(conn);
+//Console.WriteLine(conn);
 /*
 
 var secret = builder.Configuration["ConnectionStrings.MyDatabaseConnection"];
