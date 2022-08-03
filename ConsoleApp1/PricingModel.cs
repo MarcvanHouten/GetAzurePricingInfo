@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 public class PricingInformation
 {
-    public string BillingCurrency { get; set; }
-    public string CustomerEntityId { get; set; }
-    public string CustomerEntityType { get; set; }
-    public Item[] Items { get; set; }
-    public object NextPageLink { get; set; }
+    public string ?BillingCurrency { get; set; }
+    public string ?CustomerEntityId { get; set; }
+    public string ?CustomerEntityType { get; set; }
+    public Item[] ?Items { get; set; }
+    public object ?NextPageLink { get; set; }
     public int Count { get; set; }
 }
 
 public class Student
 {
-    public int StudentId { get; set; }
-    public string Name { get; set; }
+    public int ?StudentId { get; set; }
+    public string ?Name { get; set; }
 
-    public string Email { get; set; }  
+    public string ?Email { get; set; }  
 }
 
 public class Item
