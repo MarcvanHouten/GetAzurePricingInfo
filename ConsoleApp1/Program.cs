@@ -22,7 +22,12 @@ using (var db = new PricingContext())
 }
 */
 
+IConfigurationBuilder builder = new ConfigurationBuilder();
+IConfigurationRoot configuration = builder.Build();
+configuration.
 
+
+var c = configuration.GetSection("ConnectionStrings")
 
 
 var db = new AzurePricingContext()
@@ -63,7 +68,7 @@ Console.WriteLine(conn2);
 
 
 
-/*
+
 
 IConfigurationBuilder builder = new ConfigurationBuilder()
 IConfigurationRoot configuration = builder.Build();

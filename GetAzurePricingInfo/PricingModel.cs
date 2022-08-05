@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+namespace GetAzurePricingInfo
+{ 
+
 public class PricingInformation
 {
     public string BillingCurrency { get; set; }
@@ -22,6 +26,7 @@ public class Item
     public string armRegionName { get; set; }
     public string location { get; set; }
     public DateTime effectiveStartDate { get; set; }
+    [Key]
     public string meterId { get; set; }
     public string meterName { get; set; }
     public string productId { get; set; }
@@ -37,4 +42,4 @@ public class Item
     public string armSkuName { get; set; }
     public string reservationTerm { get; set; }
 }
-
+}

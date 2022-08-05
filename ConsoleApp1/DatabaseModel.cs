@@ -18,7 +18,7 @@ public class AzurePricingContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("..);
+        optionsBuilder.UseSqlServer("..");
     }
     
     /*
