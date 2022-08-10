@@ -21,7 +21,9 @@ namespace GetAzurePricingInfo
 
    public class Item
     {
-       public string currencyCode { get; set; }
+        [Key]
+        public int Id { get; set; }  
+        public string currencyCode { get; set; }
         public float tierMinimumUnits { get; set; }
         public float retailPrice { get; set; }
         public float unitPrice { get; set; }

@@ -66,31 +66,8 @@ namespace GetAzurePricingInfo
                 {   //Deserialize response
                     RootInformation root = new RootInformation();
                     root = JsonConvert.DeserializeObject<RootInformation>(content);
-
-                    List<PricingItem> items = new List<PricingItem>();
-
-                    foreach (var item in root.Items)
-                    {
-                        if (item.type != "DevTestConsumption")
-                        {
-                            PricingItem i = new PricingItem();
-                            {
-                                i.skuId = item.skuId;
-                                i.currencyCode = item.currencyCode;
-                                i.retailPrice = item.retailPrice;
-                                i.location = item.location;
-                                i.armRegionName = item.armRegionName;
-                                i.meterName = item.meterName;
-                                i.skuName = item.skuName;
-                                i.Pricingtype = item.type;
-                                i.armSkuName = item.armSkuName;
-                                i.reservationTerm = item.reservationTerm;
-                            }
-                            items.Add(i);
-                        }
-                    }
-
-                    await _MyContext.PricingItems.AddRangeAsync(items);
+                  
+                    await _MyContext.PricingItems.AddRangeAsync(root.Items);
                     await _MyContext.SaveChangesAsync();
 
                     log.LogInformation($"There are {root.Count} items.");
@@ -190,6 +167,31 @@ PricingItem i = new PricingItem();
             await _MyContext.PricingItems.AddAsync(i);
             await _MyContext.SaveChangesAsync();
 
+
+/*
+                    List<PricingItem> items = new List<PricingItem>();
+
+                    foreach (var item in root.Items)
+                    {
+                        if (item.type != "DevTestConsumption")
+                        {
+                            PricingItem i = new PricingItem();
+                            {
+                                i.skuId = item.skuId;
+                                i.currencyCode = item.currencyCode;
+                                i.retailPrice = item.retailPrice;
+                                i.location = item.location;
+                                i.armRegionName = item.armRegionName;
+                                i.meterName = item.meterName;
+                                i.skuName = item.skuName;
+                                i.Pricingtype = item.type;
+                                i.armSkuName = item.armSkuName;
+                                i.reservationTerm = item.reservationTerm;
+                            }
+                            items.Add(i);
+                        }
+                    }
+                    */
 
 
 */

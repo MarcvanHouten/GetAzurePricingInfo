@@ -14,7 +14,7 @@ namespace GetAzurePricingInfo
         public AzurePricingContext(DbContextOptions<AzurePricingContext> options)
             :base(options) {}
 
-        public DbSet<PricingItem> PricingItems { get; set; }
+        public DbSet<Item> PricingItems { get; set; }
     }
 
 
@@ -58,6 +58,35 @@ CREATE TABLE [dbo].[PricingItems](
 	[reservationTerm] [nvarchar](max) NULL
 )
 GO
-*/
+
+
+CREATE TABLE [dbo].[PricingItems](
+	[Id] [int] IDENTITY(1,1) PRIMARY KEY,
+    [currencyCode] [nvarchar](max) NULL,
+	[tierMinimumUnits] [float] NULL,
+    [retailPrice] [float] NULL,
+	[unitPrice] [float] NULL,
+    [armRegionName] [nvarchar](max) NULL,
+	[location] [nvarchar](max) NULL,
+	[effectiveStartDate] [datetime] NULL,
+    [meterId] [nvarchar](max) NULL,
+    [meterName] [nvarchar](max) NULL,
+	[productId] [nvarchar](max) NULL,
+    [skuId] [nvarchar](max) NULL,
+    [productName] [nvarchar](max) NULL,
+    [skuName] [nvarchar](max) NULL,
+    [serviceName] [nvarchar](max) NULL,
+    [serviceId] [nvarchar](max) NULL,
+    [serviceFamily] [nvarchar](max) NULL,
+    [unitOfMeasure] [nvarchar](max) NULL,
+    [type] [nvarchar](max) NULL, 	
+    [isPrimaryMeterRegion] [bit] NULL,
+    [armSkuName] [nvarchar](max) NULL,
+	[reservationTerm] [nvarchar](max) NULL
+)
+GO
+
+ 
+ */
 
 
