@@ -21,7 +21,7 @@ namespace GetAzurePricingInfo
     public class PricingItem
     {
         [Key]
-        public int PricingId { get; set; }
+        public int Id { get; set; }
         public string skuId { get; set; }
         public string currencyCode { get; set; }
         public float retailPrice { get; set; }
@@ -45,7 +45,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[PricingItems](
-	[PricingId] [int] NOT NULL PRIMARY KEY,
+	[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 	[skuId] [nvarchar](max) NULL,
 	[currencyCode] [nvarchar](max) NULL,
 	[retailPrice] [real] NULL,
@@ -56,7 +56,7 @@ CREATE TABLE [dbo].[PricingItems](
 	[Pricingtype] [nvarchar](max) NULL,
 	[armSkuName] [nvarchar](max) NULL,
 	[reservationTerm] [nvarchar](max) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+)
 GO
 */
 

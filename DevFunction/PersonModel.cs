@@ -19,14 +19,3 @@ namespace DevFunction
     }
 }
 
-/*
-
-CREATE TABLE [dbo].[Persons]
-(
-[Id] [varchar](MAX) NOT NULL PRIMARY KEY,
-[Name] [varchar](150) NOT NULL,
-[Age] [int] NOT NULL
-)
-GO
-
- */

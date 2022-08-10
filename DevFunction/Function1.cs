@@ -46,12 +46,12 @@ namespace DevFunction
             };
 
 
-            log.LogInformation($"Id is: {p.PersonId}");
+            log.LogInformation($"Id is: {p.Name}");
 
             //_MyContext.Persons.Attach(person);
             //_MyContext.Entry(person).State = EntityState.Added;
            
-            _MyContext.Persons.Add(p); 
+            _MyContext.Personen.Add(p); 
             _MyContext.SaveChanges();
 
 

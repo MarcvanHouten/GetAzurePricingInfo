@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 
 namespace DevFunction
@@ -13,13 +14,14 @@ namespace DevFunction
         public DevContext(DbContextOptions<DevContext> options)
             :base(options) {}
 
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<Person> Personen { get; set; }
     }
 
 
     public class Person
     {
-        public int PersonId { get; set; }
+        [Key]
+        public int Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
 
@@ -27,4 +29,15 @@ namespace DevFunction
     }
 }
 
+/*
+
+CREATE TABLE [dbo].[Personen]
+(
+[Id] [int] IDENTITY(1,1) PRIMARY KEY,
+[Name] [varchar](150) NOT NULL,
+[Age] [int] NOT NULL
+)
+GO
+
+ */
 

@@ -25,7 +25,7 @@ namespace GetAzurePricingInfo
         {
             string connectionString = Environment.GetEnvironmentVariable("AZURESQL_CONNECTION_STRING");
             builder.Services.AddDbContext<AzurePricingContext>(
-              options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(true));
+              options => options.UseSqlServer(connectionString));
         }
     }
     public class AzurePricingFunction
@@ -39,64 +39,8 @@ namespace GetAzurePricingInfo
 
 
         [FunctionName("AzurePricingFunction")]
-        public async Task Run([TimerTrigger("*/5 * * * * *")]TimerInfo myTimer, ILogger log)
+        public async Task Run([TimerTrigger("*/5 * * * * *")] TimerInfo myTimer, ILogger log)
         {
-            //Establish connection to SQL Database storage
-            //string sqlConnectionString = Environment.GetEnvironmentVariable("AZURESQL_CONNECTION_STRING");
-
-            PricingItem i = new PricingItem();
-            {
-                i.PricingId = 5;
-                i.skuId = "skuId";
-                i.currencyCode = "EUR";
-                i.retailPrice = 5.4f;
-                i.location = "westeurope";
-                i.armRegionName = "WE";
-                i.meterName = "MeterName";
-                i.skuName = "D48s";
-                i.Pricingtype = "PricingType";
-                i.armSkuName = "armSkuName";
-                i.reservationTerm = "reservationTerm";
-            }
-            
-            await _MyContext.PricingItems.AddAsync(i);
-            await _MyContext.SaveChangesAsync();
-
-        }
-    }
-}
-
-/*
-ricingItem i = new PricingItem();
-
-foreach (var item in p.Items)
-{
-    i.currencyCode = item.currencyCode;
-    i.tierMinimumUnits = item.tierMinimumUnits;
-    i.retailPrice = item.retailPrice;
-    i.unitPrice = item.unitPrice;
-    i.armRegionName = item.armRegionName;
-    i.location = item.location;
-    i.effectiveStartDate = item.effectiveStartDate;
-    i.meterId = item.meterId;
-    i.meterName = item.meterName;
-    i.productId = item.productId;
-    i.skuId = item.skuId;
-    i.productName = item.productName;
-    i.skuName = item.skuName;
-    i.serviceName = item.serviceName;
-    i.serviceId = item.serviceId;
-    i.serviceFamily = item.serviceFamily;
-    i.unitOfMeasure = item.unitOfMeasure;
-    i.type = item.type;
-    i.isPrimaryMeterRegion = item.isPrimaryMeterRegion;
-    i.armSkuName = item.armSkuName;
-    i.reservationTerm = item.reservationTerm;
-
-    dbList.Add(i);
-}
-
- /*
             //Create a HTTP request to get the HTTP sizes
             string baseurl = "https://prices.azure.com/api/retail/prices?";
             string selection = "&$filter=serviceName eq \'Virtual Machines\' and armRegionName eq \'westeurope\'";
@@ -108,7 +52,7 @@ foreach (var item in p.Items)
             bool ReceivedAllResults = false;
 
             do
-            {   
+            {
                 using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
                 HttpResponseMessage response = await client.SendAsync(request);
                 var content = await response.Content.ReadAsStringAsync();
@@ -119,64 +63,94 @@ foreach (var item in p.Items)
                     break;
                 }
                 else
-                {
-
-                    //_MyContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-                    //_MyContext.ChangeTracker.AutoDetectChangesEnabled = false;
-                    
-                    //Deserialize json
-                    /*
+                {   //Deserialize response
                     RootInformation root = new RootInformation();
                     root = JsonConvert.DeserializeObject<RootInformation>(content);
 
-                    List<PricingItem> items = new List<PricingItem>();  
-                    
+                    List<PricingItem> items = new List<PricingItem>();
 
-                    foreach(var item in root.Items)
-                    {   if (item.type != "DevTestConsumption")
+                    foreach (var item in root.Items)
+                    {
+                        if (item.type != "DevTestConsumption")
                         {
                             PricingItem i = new PricingItem();
-                            i.skuId = item.skuId;
-                            i.currencyCode = item.currencyCode;
-                            i.retailPrice = item.retailPrice;
-                            i.location = item.location;
-                            i.armRegionName = item.armRegionName;
-                            i.meterName = item.meterName;
-                            i.skuName = item.skuName;
-                            i.Pricingtype = item.type;
-                            i.armSkuName = item.armSkuName;
-                            i.reservationTerm = item.reservationTerm;
+                            {
+                                i.skuId = item.skuId;
+                                i.currencyCode = item.currencyCode;
+                                i.retailPrice = item.retailPrice;
+                                i.location = item.location;
+                                i.armRegionName = item.armRegionName;
+                                i.meterName = item.meterName;
+                                i.skuName = item.skuName;
+                                i.Pricingtype = item.type;
+                                i.armSkuName = item.armSkuName;
+                                i.reservationTerm = item.reservationTerm;
+                            }
                             items.Add(i);
-                            //_MyContext.PricingItems.Add(i);
                         }
                     }
-                    
-                    
-                    PricingItem i = new PricingItem();
-                    {
-                        i.skuId = "skuId";
-                        i.currencyCode = "EUR";
-                        i.retailPrice = 5.4f;
-                        i.location = "westeurope";
-                        i.armRegionName = "WE";
-                        i.meterName = "MeterName";
-                        i.skuName = "D48s";
-                        i.Pricingtype = "PricingType";
-                        i.armSkuName = "armSkuName";
-                        i.reservationTerm = "reservationTerm";
-                    }
-                    
-                    _MyContext.PricingItems.Add(i);
-                    _MyContext.SaveChanges();
 
-                    ReceivedAllResults = true;
+                    await _MyContext.PricingItems.AddRangeAsync(items);
+                    await _MyContext.SaveChangesAsync();
 
-                    /*
-                    foreach (var item in p.Items)
+                    log.LogInformation($"There are {root.Count} items.");
+
+                    if (root.Count < 100)
                     {
-                        _MyContext.PricingItems.Add(item);
+                        ReceivedAllResults = true;
                     }
-                    */
+                    else
+                    {
+                        url = root.NextPageLink.ToString();
+                        log.LogInformation(url);
+                    }
+                }
+
+
+            } while (!ReceivedAllResults);
+
+        }
+    }
+}
+
+/*
+ricingItem i = new PricingItem();
+
+foreach (var item in p.Items)
+{
+i.currencyCode = item.currencyCode;
+i.tierMinimumUnits = item.tierMinimumUnits;
+i.retailPrice = item.retailPrice;
+i.unitPrice = item.unitPrice;
+i.armRegionName = item.armRegionName;
+i.location = item.location;
+i.effectiveStartDate = item.effectiveStartDate;
+i.meterId = item.meterId;
+i.meterName = item.meterName;
+i.productId = item.productId;
+i.skuId = item.skuId;
+i.productName = item.productName;
+i.skuName = item.skuName;
+i.serviceName = item.serviceName;
+i.serviceId = item.serviceId;
+i.serviceFamily = item.serviceFamily;
+i.unitOfMeasure = item.unitOfMeasure;
+i.type = item.type;
+i.isPrimaryMeterRegion = item.isPrimaryMeterRegion;
+i.armSkuName = item.armSkuName;
+i.reservationTerm = item.reservationTerm;
+
+dbList.Add(i);
+}
+
+/*
+
+/*
+foreach (var item in p.Items)
+{
+    _MyContext.PricingItems.Add(item);
+}
+*/
 
 
 //INSERT DATA TO DATABASE
@@ -196,24 +170,25 @@ await _MyContext.AddAsync(item);
 
 /*
 
-log.LogInformation("Name {0}", items[1].armSkuName);
-log.LogInformation($"There are {root.Count} items.");
-
-if (root.Count <= 100)
-{
-    ReceivedAllResults = true;
-}
-else
-{
-    url = root.NextPageLink.ToString();
-    log.LogInformation(url);
-}
-
-}
 
 
-} while (!ReceivedAllResults);
 
+PricingItem i = new PricingItem();
+            {
+                i.skuId = "skuId";
+                i.currencyCode = "EUR";
+                i.retailPrice = 5.4f;
+                i.location = "westeurope";
+                i.armRegionName = "WE";
+                i.meterName = "MeterName";
+                i.skuName = "D48s";
+                i.Pricingtype = "PricingType";
+                i.armSkuName = "armSkuName";
+                i.reservationTerm = "reservationTerm";
+            }
+            
+            await _MyContext.PricingItems.AddAsync(i);
+            await _MyContext.SaveChangesAsync();
 
 
 
