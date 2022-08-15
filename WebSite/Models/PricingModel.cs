@@ -1,28 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace GetAzurePricingInfo
-{ 
-
-    public class RootInformation
+namespace WebSite.Models
+{
+    public class PricingModel
     {
         public string BillingCurrency { get; set; }
         public string CustomerEntityId { get; set; }
         public string CustomerEntityType { get; set; }
-        public List<Item> Items { get; set; }
+        public List<PricingItem> Items { get; set; }
         public object NextPageLink { get; set; }
         public int Count { get; set; }
     }
 
-   public class Item
+    public class PricingItem
     {
-        [Key]
-        public int Id { get; set; }  
+        public int Id { get; set; }
         public string currencyCode { get; set; }
         public float tierMinimumUnits { get; set; }
         public float retailPrice { get; set; }
@@ -45,6 +37,5 @@ namespace GetAzurePricingInfo
         public string armSkuName { get; set; }
         public string reservationTerm { get; set; }
     }
-
 
 }

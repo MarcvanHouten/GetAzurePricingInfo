@@ -66,11 +66,24 @@ namespace GetAzurePricingInfo
                 {   //Deserialize response
                     RootInformation root = new RootInformation();
                     root = JsonConvert.DeserializeObject<RootInformation>(content);
-                  
-                    await _MyContext.PricingItems.AddRangeAsync(root.Items);
-                    await _MyContext.SaveChangesAsync();
+
+
+                    //Clean the list of results
+                    if (root.Items.FirstOrDefault(p => p.type == "DevTestConsumption") is not null)
+                    {
+                        root.Items.RemoveAll(p => p.type == "DevTestConsumption");
+
+                    }
+
+
+
+
+                    // await _MyContext.PricingItems.AddRangeAsync(root.Items);
+                    // await _MyContext.SaveChangesAsync();
 
                     log.LogInformation($"There are {root.Count} items.");
+
+
 
                     if (root.Count < 100)
                     {
@@ -81,6 +94,8 @@ namespace GetAzurePricingInfo
                         url = root.NextPageLink.ToString();
                         log.LogInformation(url);
                     }
+
+                    ReceivedAllResults = true;
                 }
 
 
@@ -194,4 +209,3 @@ PricingItem i = new PricingItem();
                     */
 
 
-*/

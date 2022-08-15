@@ -1,0 +1,50 @@
+﻿@model ViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<body>
+    <div>
+        <label asp-for="selection.BillingCurrency">Select currency: </label>
+        <select asp-for="selection.BillingCurrency">
+            <option value="USD">US Dollar ($)</option>
+            <option value="EUR">Euro (€)</option>
+        </select>
+
+    </div>
+    <div>
+        @Html.DropDownList("SelectCurrency", new SelectListItem[]
+        {
+        new SelectListItem() { Text = "US Dollar ($)", Value = "USD" },
+        new SelectListItem() { Text = "Euro (€)", Value = "EUR" }},
+        new { @onchange="callChangefunc(this.value)"
+        });
+
+    </div>
+    <table>
+        <thead>
+            <tr><th>SKU Name</th><th>Price</th></tr>
+        </thead>
+        <tbody>
+            @foreach (PricingItem i in Model.Pricingskus) {
+                <tr>
+                    <td>@i.armSkuName</td>
+                    <td>@i.retailPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+
+
+
+<script>
+    function callChangefunc(val) {
+        window.location.href = "/Home/Select/" + val;
+    }
+</script>
