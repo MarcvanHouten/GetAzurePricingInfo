@@ -10,22 +10,18 @@
 </div>
 <body>
     <div>
-        <label asp-for="selection.BillingCurrency">Select currency: </label>
-        <select asp-for="selection.BillingCurrency">
-            <option value="USD">US Dollar ($)</option>
-            <option value="EUR">Euro (€)</option>
-        </select>
+        @{
+            Html.BeginForm("Index", "Home");
+        }
+        Select Currency 3
+        @Html.DropDownListFor(x => x.SelectedCurrency, Model.ListofCurrency,  new { id="EUR", @onchange="this.form.submit()"})
+        @{
+            Html.EndForm();
+        }
 
     </div>
-    <div>
-        @Html.DropDownList("SelectCurrency", new SelectListItem[]
-        {
-        new SelectListItem() { Text = "US Dollar ($)", Value = "USD" },
-        new SelectListItem() { Text = "Euro (€)", Value = "EUR" }},
-        new { @onchange="callChangefunc(this.value)"
-        });
 
-    </div>
+
     <table>
         <thead>
             <tr><th>SKU Name</th><th>Price</th></tr>
@@ -41,10 +37,3 @@
     </table>
 </body>
 
-
-
-<script>
-    function callChangefunc(val) {
-        window.location.href = "/Home/Select/" + val;
-    }
-</script>
